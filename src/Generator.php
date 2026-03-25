@@ -15,7 +15,7 @@ class Generator
 
     public function __construct()
     {
-        $this->imageManager = ImageManager::gd();
+        $this->imageManager = ImageManager::imagick();
     }
 
     public function generate(Content $content, Theme $theme, LayoutInterface $layout, string $format = 'webp'): EncodedImageInterface

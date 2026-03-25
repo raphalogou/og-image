@@ -230,10 +230,10 @@ abstract class AbstractLayout implements LayoutInterface
         for ($x = $spacing; $x < $imageWidth; $x += $bgWidth + $spacing) {
             for ($y = $spacing; $y < $imageHeight; $y += $bgHeight + $spacing) {
                 $image->place(
-                    element: $backgroundImage,
+                    element: clone $backgroundImage, // This is necessary because imagick driver applies the provided opacity the watermark instance reference
                     offset_x: $x,
                     offset_y: $y,
-                    opacity: $opacity,
+                    opacity: $opacity
                 );
             }
         }
