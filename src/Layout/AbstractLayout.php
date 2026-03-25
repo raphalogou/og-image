@@ -42,7 +42,7 @@ abstract class AbstractLayout implements LayoutInterface
     /**
      * Measure text and return a TextBox with actual dimensions.
      */
-    protected function measureText(
+    protected function createTextBox(
         ImageInterface $image,
         string $text,
         FontInterface $font,
@@ -52,9 +52,12 @@ abstract class AbstractLayout implements LayoutInterface
         $fontProcessor = $image->driver()->fontProcessor();
         $driverTextBlock = $fontProcessor->textBlock($text, $font, new Point());
 
-        $width = $fontProcessor->boxSize((string) $driverTextBlock->longestLine(), $font)->width();
-        $height = $fontProcessor->leading($font) * ($driverTextBlock->count() - 1)
-            + $fontProcessor->capHeight($font);
+        $width = $fontProcessor
+            ->boxSize((string) $driverTextBlock->longestLine(), $font)
+            ->width();
+        $height =
+            $fontProcessor->leading($font) * ($driverTextBlock->count() - 1) +
+            $fontProcessor->capHeight($font);
 
         return new TextBox($text, $x, $y, (int) $width, (int) $height);
     }
@@ -69,7 +72,7 @@ abstract class AbstractLayout implements LayoutInterface
         float $lineHeight,
         ?int $wrapWidth = null,
     ): Font {
-        $font = (new Font($fontFile))
+        $font = new Font($fontFile)
             ->setSize($size)
             ->setValignment('top')
             ->setColor($color)
@@ -92,20 +95,32 @@ abstract class AbstractLayout implements LayoutInterface
         float $lineHeight = 1.6,
         ?int $wrapWidth = null,
     ): Font {
-        return $this->createFont($theme->titleFontFile, $size, $color, $lineHeight, $wrapWidth);
+        return $this->createFont(
+            $theme->titleFontFile,
+            $size,
+            $color,
+            $lineHeight,
+            $wrapWidth,
+        );
     }
 
     /**
      * Create a text font using theme and layout configuration.
      */
-    protected function createTextFont(
+    protected function createDefaultFont(
         Theme $theme,
         int $size = 32,
         string $color = '#000000',
         float $lineHeight = 2.0,
         ?int $wrapWidth = null,
     ): Font {
-        return $this->createFont($theme->textFontFile, $size, $color, $lineHeight, $wrapWidth);
+        return $this->createFont(
+            $theme->textFontFile,
+            $size,
+            $color,
+            $lineHeight,
+            $wrapWidth,
+        );
     }
 
     /**
@@ -118,7 +133,13 @@ abstract class AbstractLayout implements LayoutInterface
         float $lineHeight = 1.0,
         ?int $wrapWidth = null,
     ): Font {
-        return $this->createFont($theme->labelFontFile, $size, $color, $lineHeight, $wrapWidth);
+        return $this->createFont(
+            $theme->labelFontFile,
+            $size,
+            $color,
+            $lineHeight,
+            $wrapWidth,
+        );
     }
 
     /**
@@ -134,7 +155,12 @@ abstract class AbstractLayout implements LayoutInterface
     ): void {
         if ($background) {
             $this->renderRectangleBox($image, $background);
-            $image->text($box->text, $box->x + $paddingX, $box->y + $paddingY, $font);
+            $image->text(
+                $box->text,
+                $box->x + $paddingX,
+                $box->y + $paddingY,
+                $font,
+            );
         } else {
             $image->text($box->text, $box->x, $box->y, $font);
         }
@@ -147,15 +173,11 @@ abstract class AbstractLayout implements LayoutInterface
         ImageInterface $image,
         RectangleBox $box,
     ): void {
-        $image->drawRectangle(
-            $box->x,
-            $box->y,
-            function (RectangleFactory $factory) use ($box) {
-                $factory
-                    ->size($box->width, $box->height)
-                    ->background($box->color);
-            }
-        );
+        $image->drawRectangle($box->x, $box->y, function (
+            RectangleFactory $factory,
+        ) use ($box) {
+            $factory->size($box->width, $box->height)->background($box->color);
+        });
     }
 
     /**
@@ -164,13 +186,21 @@ abstract class AbstractLayout implements LayoutInterface
     protected function renderImageBox(
         ImageInterface $image,
         ImageBox $box,
+        ?float $scale = null,
     ): void {
         $elementImage = $image->driver()->handleInput($box->source);
+        if ($scale) {
+            $elementImage->scaleDown((int) ($elementImage->width() * $scale));
+        }
+
         $image->place(
             element: $elementImage,
+            position: $box->position ?? 'top-left',
             offset_x: $box->x,
             offset_y: $box->y,
         );
+
+        $box->setDimensions(width: $elementImage->width(), height: $elementImage->height());
     }
 
     /**
@@ -179,8 +209,8 @@ abstract class AbstractLayout implements LayoutInterface
     protected function paintBackground(
         ImageInterface $image,
         Theme $theme,
-        int $imageWidth,
-        int $imageHeight,
+        ?int $imageWidth = null,
+        ?int $imageHeight = null,
         int $spacing = 0,
     ): void {
         $background = $theme->getBackground();
@@ -193,6 +223,9 @@ abstract class AbstractLayout implements LayoutInterface
         $bgWidth = $backgroundImage->width();
         $bgHeight = $backgroundImage->height();
         $opacity = $background->opacity;
+
+        $imageWidth ??= $image->width();
+        $imageHeight ??= $image->height();
 
         for ($x = $spacing; $x < $imageWidth; $x += $bgWidth + $spacing) {
             for ($y = $spacing; $y < $imageHeight; $y += $bgHeight + $spacing) {

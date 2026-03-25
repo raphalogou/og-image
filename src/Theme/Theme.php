@@ -12,6 +12,7 @@ class Theme
     public string $backgroundColor = '#f1efe4';
     public int $backgroundOpacity = 6;
     public ?string $backgroundImage = null;
+    public ?int $backgroundPatternSpacing = null;
 
     // Watermark
     public ?string $watermarkFile = null;

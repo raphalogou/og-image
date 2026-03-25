@@ -42,7 +42,7 @@ class StackedLayout extends AbstractLayout implements LayoutInterface
 
     public function render(ImageInterface $image, Content $content, Theme $theme): void
     {
-        $this->paintBackground($image, $theme, self::IMAGE_WIDTH, self::IMAGE_HEIGHT, self::BACKGROUND_SPACING);
+        $this->paintBackground($image, $theme, self::IMAGE_WIDTH, self::IMAGE_HEIGHT, $theme->backgroundPatternSpacing ?? self::BACKGROUND_SPACING);
         $this->drawFooter($image, $theme);
 
         // Position tracking is simple and explicit
@@ -56,7 +56,7 @@ class StackedLayout extends AbstractLayout implements LayoutInterface
                 $this->labelFontColor,
                 $this->labelLineHeight,
             );
-            $labelBox = $this->measureText($image, $content->label, $labelFont, $nextPosition->x, $nextPosition->y);
+            $labelBox = $this->createTextBox($image, $content->label, $labelFont, $nextPosition->x, $nextPosition->y);
 
             // Add background
             $bgBox = new RectangleBox(
@@ -80,20 +80,20 @@ class StackedLayout extends AbstractLayout implements LayoutInterface
             $this->titleLineHeight,
             self::IMAGE_WIDTH - $this->spacingX * 2,
         );
-        $titleBox = $this->measureText($image, $content->title, $titleFont, $nextPosition->x, $nextPosition->y);
+        $titleBox = $this->createTextBox($image, $content->title, $titleFont, $nextPosition->x, $nextPosition->y);
         $this->renderTextBox($image, $titleBox, $titleFont);
 
         // Draw description
         if ($content->description && mb_strlen($content->title) <= self::MAX_TITLE_LENGTH) {
             $nextPosition = $this->placeBelow($titleBox, $this->spacingY);
-            $descFont = $this->createTextFont(
+            $descFont = $this->createDefaultFont(
                 $theme,
                 $this->textFontSize,
                 $this->textFontColor,
                 $this->textLineHeight,
                 self::IMAGE_WIDTH - $this->spacingX * 3,
             );
-            $descBox = $this->measureText($image, $content->description, $descFont, $nextPosition->x, $nextPosition->y);
+            $descBox = $this->createTextBox($image, $content->description, $descFont, $nextPosition->x, $nextPosition->y);
             $this->renderTextBox($image, $descBox, $descFont);
         }
     }
