@@ -18,11 +18,8 @@ class Generator
         $this->imageManager = ImageManager::gd();
     }
 
-    public function generate(
-        Content $content,
-        Theme $theme,
-        LayoutInterface $layout,
-    ): EncodedImageInterface {
+    public function generate(Content $content, Theme $theme, LayoutInterface $layout, string $format = 'webp'): EncodedImageInterface
+    {
         $dimensions = $layout->getDimensions();
         $background = $theme->getBackground();
 
@@ -32,6 +29,6 @@ class Generator
 
         $layout->render($image, $content, $theme);
 
-        return $image->toWebp();
+        return 'webp' === $format ? $image->toWebp() : $image->toPng();
     }
 }
