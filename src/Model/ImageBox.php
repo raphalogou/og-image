@@ -2,14 +2,15 @@
 
 namespace Void\OgImageBundle\Model;
 
-readonly class ImageBox extends Box
+class ImageBox extends Box
 {
     public function __construct(
-        public string $source,
+        public readonly string $source,
         int $x,
         int $y,
-        int $width,
-        int $height,
+        ?int $width = null,
+        ?int $height = null,
+        public ?string $position = null,
     ) {
         parent::__construct($x, $y, $width, $height);
     }

@@ -2,10 +2,10 @@
 
 namespace Void\OgImageBundle\Model;
 
-readonly class RectangleBox extends Box
+class RectangleBox extends Box
 {
     public function __construct(
-        public string $color,
+        public readonly string $color,
         int $x,
         int $y,
         int $width,

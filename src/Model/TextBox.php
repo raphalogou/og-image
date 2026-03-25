@@ -2,14 +2,14 @@
 
 namespace Void\OgImageBundle\Model;
 
-readonly class TextBox extends Box
+class TextBox extends Box
 {
     public function __construct(
-        public string $text,
+        public readonly string $text,
         int $x,
         int $y,
-        int $width,
-        int $height,
+        ?int $width = null,
+        ?int $height = null,
     ) {
         parent::__construct($x, $y, $width, $height);
     }
