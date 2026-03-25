@@ -6,7 +6,7 @@ use Void\OgImageBundle\Canvas;
 use Void\OgImageBundle\Model\ImageContent;
 use Void\OgImageBundle\Theme;
 
-abstract class Layout
+abstract class AbstractLayout
 {
     abstract public function build(ImageContent $data, Theme $theme): Canvas;
 

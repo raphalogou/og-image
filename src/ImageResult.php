@@ -39,7 +39,7 @@ class ImageResult
 
     public function getWidth(): int
     {
-        return $this->encoded;
+        return $this->width;
     }
 
     public function getHeight(): int

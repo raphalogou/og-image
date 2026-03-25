@@ -13,7 +13,7 @@ use Void\OgImageBundle\Model\ImageContent;
 use Void\OgImageBundle\Model\Position;
 use Void\OgImageBundle\Theme;
 
-class StandardLayout extends Layout
+class StandardLayout extends AbstractLayout
 {
     private const IMAGE_WIDTH = 1280;
     private const IMAGE_HEIGHT = 640;

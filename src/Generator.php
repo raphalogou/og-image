@@ -3,12 +3,12 @@
 namespace Void\OgImageBundle;
 
 use Void\OgImageBundle\Enum\Format;
-use Void\OgImageBundle\Layout\Layout;
+use Void\OgImageBundle\Layout\AbstractLayout;
 use Void\OgImageBundle\Model\ImageContent;
 
 class Generator
 {
-    public function generate(ImageContent $data, Layout $layout, ?Theme $theme = null, Format $format = Format::Webp): ImageResult
+    public function generate(ImageContent $data, AbstractLayout $layout, ?Theme $theme = null, Format $format = Format::Webp): ImageResult
     {
         $resolvedTheme = $layout
             ->defaultTheme()
