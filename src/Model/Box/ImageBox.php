@@ -12,7 +12,7 @@ class ImageBox extends Box
         public readonly string $source,
         private ?int $width = null,
         private ?int $height = null,
-        public readonly float $opacity = 1.0,
+        public float $opacity = 1.0,
         private Placement $placement = Placement::TopLeft,
         private ?float $scale = null,
     ) {
@@ -46,7 +46,7 @@ class ImageBox extends Box
         }
 
         if ($this->scale) {
-            $elementImage->scale($this->scale * $elementImage->width());
+            $elementImage->scale((int) ($this->scale * $elementImage->width()));
         }
 
         $image->place(

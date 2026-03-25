@@ -17,7 +17,6 @@ class StandardLayout extends AbstractLayout
 {
     private const IMAGE_WIDTH = 1280;
     private const IMAGE_HEIGHT = 640;
-    private const PADDING_SECTION = 15;
     private const MAX_TITLE_LENGTH = 100;
     private const MARGIN = 50;
 
@@ -65,7 +64,7 @@ class StandardLayout extends AbstractLayout
             $badgeBox = new TextBox(
                 text: $badge->value,
                 font: $theme->badgeFont,
-                color: $theme->badgeFont?->color ?? '#ffffff',
+                color: $theme->badgeFont->color ?? '#ffffff',
                 background: $theme->primaryColor,
                 paddingX: 15,
                 paddingY: 15,
@@ -80,7 +79,7 @@ class StandardLayout extends AbstractLayout
         $title = new TextBox(
             text: $data->title,
             font: $theme->titleFont ??= new Font(__DIR__.'/../../assets/fonts/inter-bold.ttf', 32),
-            color: $theme->titleFont?->color ?? '#000000',
+            color: $theme->titleFont->color ?? '#000000',
             maxWidth: self::IMAGE_WIDTH - $this->spacingX * 2,
             lineHeight: $this->titleLineHeight
         );
@@ -97,7 +96,7 @@ class StandardLayout extends AbstractLayout
             $description = new TextBox(
                 text: $data->description,
                 font: $theme->bodyFont ??= new Font(__DIR__.'/../../assets/fonts/inter-regular.ttf', 28),
-                color: $theme->bodyFont?->color ?? $this->textFontColor,
+                color: $theme->bodyFont->color ?? $this->textFontColor,
                 maxWidth: self::IMAGE_WIDTH - $this->spacingX * 3,
                 lineHeight: $this->textLineHeight
             );
@@ -108,7 +107,7 @@ class StandardLayout extends AbstractLayout
         // Draw logo
         if ($theme->logo) {
             $logoBox = new ImageBox(source: $theme->logo, placement: Placement::BottomRight, scale: $theme->logoScale);
-            $canvas->add($logoBox, position: new Position(x: self::MARGIN, y: self::MARGIN * 1.25));
+            $canvas->add($logoBox, position: new Position(self::MARGIN, (int) (self::MARGIN * 1.25)));
         }
 
         // Draw footer

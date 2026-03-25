@@ -82,7 +82,7 @@ class Canvas
                     position: 'top-left',
                     offset_x: $x,
                     offset_y: $y,
-                    opacity: $backgroundImg->opacity * 100
+                    opacity: (int) ($backgroundImg->opacity * 100)
                 );
             }
         }
