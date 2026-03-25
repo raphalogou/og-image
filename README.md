@@ -8,11 +8,17 @@ The OG Image Bundle provides a flexible, extensible system to programmatically g
 
 ## Features
 
-- 🎨 **Customizable Themes** - Define colors, backgrounds, and styling
-- 📐 **Layout System** - Pre-built layouts with extensibility for custom designs
-- 🖼️ **Image Composition** - Add text boxes, rectangles, images, and watermarks
-- 💾 **Storage Integration** - Built-in filesystem storage with extensible interface
-- 🚀 **Symfony Integration** - Seamless bundle integration with Symfony 7.4+/8.0+
+- 🎨 **Customizable Themes** - Define colors, backgrounds, and fonts with `mergeWith()` composition
+- 📐 **Layout System** - Extend `Layout` for custom designs (StandardLayout included)
+- 🖼️ **Image Composition** - Text boxes, image boxes, and rectangle shapes
+- 🔄 **Format Support** - Render to PNG or WebP with configurable quality
+- 🚀 **Stateless API** - Simple, functional approach with immediate rendering
+
+## Requirements
+
+- PHP 8.2+
+- Symfony 7.4 or 8.0+
+- Intervention Image 3.11+
 
 ## Installation
 
@@ -20,7 +26,7 @@ The OG Image Bundle provides a flexible, extensible system to programmatically g
 composer require void/og-image-bundle
 ```
 
-Register the bundle in your Symfony configuration:
+Register the bundle in your Symfony configuration (if using Symfony):
 
 ```php
 // config/bundles.php
@@ -30,101 +36,119 @@ return [
 ];
 ```
 
-Configure the storage directory in your Symfony config:
-
-```yaml
-# config/packages/og_image.yaml
-og_image:
-  storage_dir: '%kernel.project_dir%/public/og-images'
-```
-
 ## Quick Start
 
 ```php
 use Void\OgImageBundle\Generator;
-use Void\OgImageBundle\Model\Content;
-use Void\OgImageBundle\Theme\Theme;
-use Void\OgImageBundle\Layout\StackedLayout;
+use Void\OgImageBundle\Model\ImageContent;
+use Void\OgImageBundle\Model\Background;
+use Void\OgImageBundle\Model\Font;
+use Void\OgImageBundle\Model\Badge;
+use Void\OgImageBundle\Theme;
+use Void\OgImageBundle\Layout\StandardLayout;
+use Void\OgImageBundle\Enum\Format;
 
 // Create content
-$content = new Content(
+$content = new ImageContent(
     title: 'My Article Title',
     description: 'A brief description of the article',
-    label: 'Blog'
+    badges: [
+        new Badge('category', 'Blog'),
+        new Badge('date', '2026-03-25'),
+    ]
 );
 
-// Define theme
+// Define theme (optional - layout provides defaults)
 $theme = new Theme(
-    background: new Background(color: '#ffffff'),
-    // Add text fonts and styling
+    primaryColor: '#6366f1',
+    background: new Background(color: '#0f172a'),
+    titleFont: new Font('path/to/Inter-Bold.ttf', size: 64, color: '#ffffff'),
+    bodyFont: new Font('path/to/Inter-Regular.ttf', size: 28, color: '#ffffff'),
+    padding: 60
 );
 
 // Choose layout
-$layout = new StackedLayout();
+$layout = new StandardLayout();
 
 // Generate image
-$image = $this->generator->generate($content, $theme, $layout);
+$generator = new Generator();
+$result = $generator->generate(
+    data: $content,
+    layout: new StandardLayout(),
+    theme: $theme,      // optional - uses layout defaults if null
+    format: Format::Webp
+);
 
-// Save to file
-$image->save('path/to/save.webp');
+// Convert to various formats
+$binary = $result->toString();        // Binary image data
+$base64 = $result->toBase64();       // Data URI for HTML
+$stream = $result->toStream();       // File pointer resource
+$mimeType = $result->mimeType();    // 'image/webp'
+$width = $result->getWidth();       // 1280
+$height = $result->getHeight();     // 640
 ```
 
 ## Architecture
 
 ### Core Components
 
-- **Generator** - Main service that orchestrates image generation
-- **Layout** - Defines image dimensions and rendering logic
-- **Theme** - Manages visual styling and appearance
-- **Content** - Data model for image content (title, description, label)
-- **Storage** - Handles image persistence and file management
+- **Generator** - Stateless service that orchestrates image generation
+- **Layout** - Defines image dimensions and rendering logic (e.g., StandardLayout)
+- **Theme** - Manages visual styling with `mergeWith()` support for composition
+- **ImageContent** - Data model for image content (title, description, badges, extras)
+- **Canvas** - Immediate-mode rendering surface for composing boxes
+- **ImageResult** - Immutable result wrapper with conversion methods
 
 ### Models
 
-- `Content` - Container for title, description, and label
-- `Dimensions` - Image width and height
-- `Background` - Background color and properties
+- `ImageContent` - Container for title, description, badges, and extras
+- `Background` - Background color or gradient configuration
+- `Font` - Typography configuration (path, size, color)
+- `Badge` - Label/value pairs for metadata display
+- `Position` - Placement coordinates (supports pixels and percentages)
 - `TextBox`, `ImageBox`, `RectangleBox` - Renderable elements
-- `TextFont` - Typography configuration
-- `Watermark` - Watermark overlay support
 
 ## Extending
 
 ### Custom Layouts
 
-Implement `LayoutInterface` to create custom layouts:
+Extend the `Layout` abstract class to create custom layouts:
 
 ```php
-class MyCustomLayout implements LayoutInterface
+use Void\OgImageBundle\Layout\Layout;
+use Void\OgImageBundle\Model\ImageContent;
+use Void\OgImageBundle\Theme;
+use Void\OgImageBundle\Canvas;
+use Void\OgImageBundle\Model\Background;
+use Void\OgImageBundle\Model\Box\TextBox;
+use Void\OgImageBundle\Model\Position;
+
+class MyCustomLayout extends Layout
 {
-    public function getDimensions(): Dimensions
+    public function build(ImageContent $content, Theme $theme): Canvas
     {
-        return new Dimensions(1200, 630);
+        $canvas = new Canvas(1200, 630);
+        
+        // Set background
+        $canvas->setBackground($theme->background ?? new Background(color: '#ffffff'));
+        
+        // Add your custom rendering logic
+        $title = new TextBox($content->title);
+        $canvas->add($title, new Position(50, 50));
+        
+        return $canvas;
     }
 
-    public function render(ImageInterface $image, Content $content, Theme $theme): void
+    public function defaultTheme(): Theme
     {
-        // Your rendering logic
+        return new Theme(
+            primaryColor: '#333333',
+            textColor: '#000000',
+            padding: 50
+        );
     }
 }
 ```
-
-### Custom Storage
-
-Implement `StorageInterface` to use alternative storage backends:
-
-```php
-class S3Storage implements StorageInterface
-{
-    // Your S3 storage implementation
-}
-```
-
-## Requirements
-
-- PHP 8.2+
-- Symfony 7.4 or 8.0+
-- Intervention Image 3.11+
 
 ## License
 
