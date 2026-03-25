@@ -2,9 +2,9 @@
 
 namespace Void\OgImageBundle\Storage;
 
-use Intervention\Image\Interfaces\EncodedImageInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Void\OgImageBundle\Exception\ImageStorageException;
+use Void\OgImageBundle\ImageResult;
 
 class FilesystemStorage implements StorageInterface
 {
@@ -19,16 +19,16 @@ class FilesystemStorage implements StorageInterface
         }
     }
 
-    public function saveImage(EncodedImageInterface $image, string $path): string
+    public function save(ImageResult $result, string $path): string
     {
-        $path = sprintf('%s/%s', $this->storageDirectory, trim($path, '/'));
+        $fullPath = sprintf('%s/%s', $this->storageDirectory, trim($path, '/'));
 
         try {
-            $this->filesystem->dumpFile($path, $image->toString());
+            $this->filesystem->dumpFile($fullPath, $result->toString());
 
-            return $path;
+            return $fullPath;
         } catch (\Exception $e) {
-            throw new ImageStorageException(sprintf('Failed to save image to %s: %s', $path, $e->getMessage()), 0, $e);
+            throw new ImageStorageException(sprintf('Failed to save image to %s: %s', $fullPath, $e->getMessage()), 0, $e);
         }
     }
 }

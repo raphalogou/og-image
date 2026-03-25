@@ -2,11 +2,11 @@
 
 namespace Void\OgImageBundle\Model;
 
-readonly class Dimensions
+readonly class Badge
 {
     public function __construct(
-        public int $width,
-        public int $height,
+        public string $type,
+        public string $value,
     ) {
     }
 }

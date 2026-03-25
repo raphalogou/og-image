@@ -1,0 +1,49 @@
+<?php
+
+namespace Void\OgImageBundle;
+
+use Intervention\Image\Interfaces\EncodedImageInterface;
+
+class ImageResult
+{
+    public function __construct(
+        private readonly EncodedImageInterface $encoded,
+        private readonly int $width,
+        private readonly int $height,
+        private readonly string $mimeType,
+    ) {
+    }
+
+    /**
+     * @return resource
+     */
+    public function toStream()
+    {
+        return $this->encoded->toFilePointer();
+    }
+
+    public function toBase64(): string
+    {
+        return $this->encoded->toDataUri();
+    }
+
+    public function toString(): string
+    {
+        return $this->encoded->toString();
+    }
+
+    public function mimeType(): string
+    {
+        return $this->mimeType;
+    }
+
+    public function getWidth(): int
+    {
+        return $this->encoded;
+    }
+
+    public function getHeight(): int
+    {
+        return $this->height;
+    }
+}

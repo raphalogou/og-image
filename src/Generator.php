@@ -2,33 +2,36 @@
 
 namespace Void\OgImageBundle;
 
-use Intervention\Image\ImageManager;
-use Intervention\Image\Interfaces\EncodedImageInterface;
-use Intervention\Image\Interfaces\ImageManagerInterface;
-use Void\OgImageBundle\Layout\LayoutInterface;
-use Void\OgImageBundle\Model\Content;
-use Void\OgImageBundle\Theme\Theme;
+use Void\OgImageBundle\Enum\Format;
+use Void\OgImageBundle\Layout\Layout;
+use Void\OgImageBundle\Model\ImageContent;
 
 class Generator
 {
-    private readonly ImageManagerInterface $imageManager;
-
-    public function __construct()
+    public function generate(ImageContent $data, Layout $layout, ?Theme $theme = null, Format $format = Format::Webp): ImageResult
     {
-        $this->imageManager = ImageManager::imagick();
-    }
+        $resolvedTheme = $layout
+            ->defaultTheme()
+            ->mergeWith($theme);
 
-    public function generate(Content $content, Theme $theme, LayoutInterface $layout, string $format = 'webp'): EncodedImageInterface
-    {
-        $dimensions = $layout->getDimensions();
-        $background = $theme->getBackground();
+        $canvas = $layout->build($data, $resolvedTheme);
 
-        $image = $this->imageManager
-            ->create($dimensions->width, $dimensions->height)
-            ->fill($background?->color ?? '#ffffff');
+        // 3. Encode based on format
+        $image = $canvas->getImage();
+        $encoded = match ($format) {
+            Format::Png => $image->toPng(),
+            Format::Webp => $image->toWebp(),
+        };
 
-        $layout->render($image, $content, $theme);
-
-        return 'webp' === $format ? $image->toWebp() : $image->toPng();
+        // 4. Return ImageResult
+        return new ImageResult(
+            $encoded,
+            $canvas->getWidth(),
+            $canvas->getHeight(),
+            match ($format) {
+                Format::Png => 'image/png',
+                Format::Webp => 'image/webp',
+            }
+        );
     }
 }

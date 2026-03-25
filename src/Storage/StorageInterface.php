@@ -2,20 +2,20 @@
 
 namespace Void\OgImageBundle\Storage;
 
-use Intervention\Image\Interfaces\EncodedImageInterface;
 use Void\OgImageBundle\Exception\ImageStorageException;
+use Void\OgImageBundle\ImageResult;
 
 interface StorageInterface
 {
     /**
-     * Save the encoded image to storage.
+     * Save the image result to storage.
      *
-     * @param EncodedImageInterface $image The encoded image to save
-     * @param string                $path  The relative path/filename (e.g., 'post-123.webp')
+     * @param ImageResult $result The image result to save
+     * @param string      $path   The relative path/filename (e.g., 'post-123.png')
      *
-     * @return string The full path to the saved file
+     * @return string The stored path or public URL
      *
      * @throws ImageStorageException
      */
-    public function saveImage(EncodedImageInterface $image, string $path): string;
+    public function save(ImageResult $result, string $path): string;
 }
