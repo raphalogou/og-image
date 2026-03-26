@@ -3,7 +3,7 @@
 namespace Void\OgImage\Storage;
 
 use Void\OgImage\Exception\ImageStorageException;
-use Void\OgImage\ImageResult;
+use Void\OgImage\OpenGraphImage;
 
 class FilesystemStorage implements StorageInterface
 {
@@ -20,7 +20,7 @@ class FilesystemStorage implements StorageInterface
         }
     }
 
-    public function save(ImageResult $result, string $path): string
+    public function save(OpenGraphImage $result, string $path): string
     {
         $fullPath = sprintf('%s/%s', $this->storageDirectory, trim($path, '/'));
 

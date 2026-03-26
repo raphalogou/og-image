@@ -13,7 +13,7 @@ class Generator
     {
     }
 
-    public function generate(ImageContent $data, AbstractLayout $layout, ?Theme $theme = null, Format $format = Format::Webp): ImageResult
+    public function generate(ImageContent $data, AbstractLayout $layout, ?Theme $theme = null, Format $format = Format::Webp): OpenGraphImage
     {
         $resolvedTheme = $layout
             ->defaultTheme()
@@ -27,7 +27,7 @@ class Generator
             Format::Webp => $image->toWebp(),
         };
 
-        return new ImageResult(
+        return new OpenGraphImage(
             $encoded,
             $canvas->getWidth(),
             $canvas->getHeight(),

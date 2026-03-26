@@ -4,7 +4,7 @@ namespace Void\OgImage;
 
 use Intervention\Image\Interfaces\EncodedImageInterface;
 
-class ImageResult
+class OpenGraphImage
 {
     public function __construct(
         private readonly EncodedImageInterface $encoded,

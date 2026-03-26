@@ -3,9 +3,9 @@
 namespace Void\OgImage\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Void\OgImage\ImageResult;
+use Void\OgImage\OpenGraphImage;
 
-class ImageResultTest extends TestCase
+class OpenGraphImageTest extends TestCase
 {
     private function createMockEncodedImage(string $content = 'test-image-data'): \Intervention\Image\Interfaces\EncodedImageInterface
     {
@@ -26,7 +26,7 @@ class ImageResultTest extends TestCase
     public function testToStringDelegates(): void
     {
         $encoded = $this->createMockEncodedImage('binary-image-content');
-        $result = new ImageResult($encoded, 640, 480, 'image/png');
+        $result = new OpenGraphImage($encoded, 640, 480, 'image/png');
 
         $this->assertSame('binary-image-content', $result->toString());
     }
@@ -34,7 +34,7 @@ class ImageResultTest extends TestCase
     public function testToBase64DelegatesAndIncludesMimeType(): void
     {
         $encoded = $this->createMockEncodedImage('test-data');
-        $result = new ImageResult($encoded, 1000, 500, 'image/png');
+        $result = new OpenGraphImage($encoded, 1000, 500, 'image/png');
 
         $base64 = $result->toBase64();
 
@@ -45,7 +45,7 @@ class ImageResultTest extends TestCase
     public function testToStreamReturnsResource(): void
     {
         $encoded = $this->createMockEncodedImage();
-        $result = new ImageResult($encoded, 1280, 640, 'image/png');
+        $result = new OpenGraphImage($encoded, 1280, 640, 'image/png');
 
         $stream = $result->toStream();
 
