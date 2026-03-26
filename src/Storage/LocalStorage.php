@@ -5,7 +5,7 @@ namespace Void\OgImage\Storage;
 use Void\OgImage\Exception\ImageStorageException;
 use Void\OgImage\OpenGraphImage;
 
-class FilesystemStorage implements StorageInterface
+class LocalStorage implements StorageInterface
 {
     public function __construct(private readonly string $storageDirectory)
     {

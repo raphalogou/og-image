@@ -49,6 +49,6 @@ class OpenGraphImageTest extends TestCase
 
         $stream = $result->toStream();
 
-        $this->assertIsResource($stream);
+        $this->assertIsResource($stream); // @phpstan-ignore method.alreadyNarrowedType
     }
 }
