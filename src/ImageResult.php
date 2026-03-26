@@ -1,6 +1,6 @@
 <?php
 
-namespace Void\OgImageBundle;
+namespace Void\OgImage;
 
 use Intervention\Image\Interfaces\EncodedImageInterface;
 

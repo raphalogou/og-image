@@ -1,7 +1,7 @@
 {
-    "name": "void/og-image-bundle",
-    "description": "An Open Graph Image generator bundle",
-    "type": "symfony-bundle",
+    "name": "void/og-image",
+    "description": "A minimal Open Graph Image generator library",
+    "type": "library",
     "license": "MIT",
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -13,24 +13,22 @@
     ],
     "require": {
         "php": ">=8.2",
-        "intervention/image": "^3.11",
-        "symfony/dependency-injection": "^7.4|^8.0",
-        "symfony/filesystem": "^7.4|^8.0",
-        "symfony/framework-bundle": "^7.4|^8.0"
+        "intervention/image": "^3.11"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.94",
         "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^11.0"
+        "phpunit/phpunit": "^11.0",
+        "symfony/framework-bundle": "^7.4|^8.0"
     },
     "autoload": {
         "psr-4": {
-            "Void\\OgImageBundle\\": "src/"
+            "Void\\OgImage\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Void\\OgImageBundle\\Tests\\": "tests/"
+            "Void\\OgImage\\Tests\\": "tests/"
         }
     },
     "scripts": {

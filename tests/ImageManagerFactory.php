@@ -1,6 +1,6 @@
 <?php
 
-namespace Void\OgImageBundle\Tests;
+namespace Void\OgImage\Tests;
 
 use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageManagerInterface;

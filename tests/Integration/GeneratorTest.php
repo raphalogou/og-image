@@ -1,17 +1,17 @@
 <?php
 
-namespace Void\OgImageBundle\Tests\Integration;
+namespace Void\OgImage\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
-use Void\OgImageBundle\Enum\Format;
-use Void\OgImageBundle\Generator;
-use Void\OgImageBundle\Layout\StandardLayout;
-use Void\OgImageBundle\Model\Background;
-use Void\OgImageBundle\Model\Badge;
-use Void\OgImageBundle\Model\Font;
-use Void\OgImageBundle\Model\ImageContent;
-use Void\OgImageBundle\Tests\ImageManagerFactory;
-use Void\OgImageBundle\Theme;
+use Void\OgImage\Enum\Format;
+use Void\OgImage\Generator;
+use Void\OgImage\Layout\StandardLayout;
+use Void\OgImage\Model\Background;
+use Void\OgImage\Model\Badge;
+use Void\OgImage\Model\Font;
+use Void\OgImage\Model\ImageContent;
+use Void\OgImage\Tests\ImageManagerFactory;
+use Void\OgImage\Theme;
 
 class GeneratorTest extends TestCase
 {

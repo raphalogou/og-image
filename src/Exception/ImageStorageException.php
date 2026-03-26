@@ -1,6 +1,6 @@
 <?php
 
-namespace Void\OgImageBundle\Exception;
+namespace Void\OgImage\Exception;
 
 class ImageStorageException extends \RuntimeException
 {

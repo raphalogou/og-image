@@ -1,9 +1,9 @@
 <?php
 
-namespace Void\OgImageBundle\Tests\Unit;
+namespace Void\OgImage\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Void\OgImageBundle\ImageResult;
+use Void\OgImage\ImageResult;
 
 class ImageResultTest extends TestCase
 {

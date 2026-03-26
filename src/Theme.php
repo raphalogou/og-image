@@ -1,10 +1,10 @@
 <?php
 
-namespace Void\OgImageBundle;
+namespace Void\OgImage;
 
-use Void\OgImageBundle\Model\Background;
-use Void\OgImageBundle\Model\BadgeDefinition;
-use Void\OgImageBundle\Model\Font;
+use Void\OgImage\Model\Background;
+use Void\OgImage\Model\BadgeDefinition;
+use Void\OgImage\Model\Font;
 
 class Theme
 {

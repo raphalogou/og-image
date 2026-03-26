@@ -4,9 +4,9 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageManagerInterface;
-use Void\OgImageBundle\Generator;
-use Void\OgImageBundle\Storage\FilesystemStorage;
-use Void\OgImageBundle\Storage\StorageInterface;
+use Void\OgImage\Generator;
+use Void\OgImage\Storage\FilesystemStorage;
+use Void\OgImage\Storage\StorageInterface;
 
 return static function (ContainerConfigurator $container): void {
     $container->services()

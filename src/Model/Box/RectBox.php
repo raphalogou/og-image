@@ -1,10 +1,10 @@
 <?php
 
-namespace Void\OgImageBundle\Model\Box;
+namespace Void\OgImage\Model\Box;
 
 use Intervention\Image\Geometry\Factories\RectangleFactory;
 use Intervention\Image\Interfaces\ImageInterface;
-use Void\OgImageBundle\Model\Position;
+use Void\OgImage\Model\Position;
 
 class RectBox extends Box
 {

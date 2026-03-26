@@ -1,11 +1,11 @@
 <?php
 
-namespace Void\OgImageBundle\Tests\Unit;
+namespace Void\OgImage\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Void\OgImageBundle\Canvas;
-use Void\OgImageBundle\Model\Background;
-use Void\OgImageBundle\Tests\ImageManagerFactory;
+use Void\OgImage\Canvas;
+use Void\OgImage\Model\Background;
+use Void\OgImage\Tests\ImageManagerFactory;
 
 class CanvasTest extends TestCase
 {

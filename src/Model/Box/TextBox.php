@@ -1,14 +1,14 @@
 <?php
 
-namespace Void\OgImageBundle\Model\Box;
+namespace Void\OgImage\Model\Box;
 
 use Intervention\Image\Geometry\Point;
 use Intervention\Image\Interfaces\ImageInterface;
 use Intervention\Image\Typography\Font as InterventionFont;
-use Void\OgImageBundle\Enum\Overflow;
-use Void\OgImageBundle\Enum\TextAlignment;
-use Void\OgImageBundle\Model\Font;
-use Void\OgImageBundle\Model\Position;
+use Void\OgImage\Enum\Overflow;
+use Void\OgImage\Enum\TextAlignment;
+use Void\OgImage\Model\Font;
+use Void\OgImage\Model\Position;
 
 class TextBox extends Box
 {

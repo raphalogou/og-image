@@ -1,10 +1,10 @@
 <?php
 
-namespace Void\OgImageBundle\Model\Box;
+namespace Void\OgImage\Model\Box;
 
 use Intervention\Image\Interfaces\ImageInterface;
-use Void\OgImageBundle\Enum\Placement;
-use Void\OgImageBundle\Model\Position;
+use Void\OgImage\Enum\Placement;
+use Void\OgImage\Model\Position;
 
 class ImageBox extends Box
 {

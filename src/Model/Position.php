@@ -1,6 +1,6 @@
 <?php
 
-namespace Void\OgImageBundle\Model;
+namespace Void\OgImage\Model;
 
 readonly class Position
 {

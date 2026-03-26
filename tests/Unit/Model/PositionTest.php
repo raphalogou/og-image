@@ -1,9 +1,9 @@
 <?php
 
-namespace Void\OgImageBundle\Tests\Unit\Model;
+namespace Void\OgImage\Tests\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use Void\OgImageBundle\Model\Position;
+use Void\OgImage\Model\Position;
 
 class PositionTest extends TestCase
 {

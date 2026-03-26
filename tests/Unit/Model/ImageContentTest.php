@@ -1,10 +1,10 @@
 <?php
 
-namespace Void\OgImageBundle\Tests\Unit\Model;
+namespace Void\OgImage\Tests\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use Void\OgImageBundle\Model\Badge;
-use Void\OgImageBundle\Model\ImageContent;
+use Void\OgImage\Model\Badge;
+use Void\OgImage\Model\ImageContent;
 
 class ImageContentTest extends TestCase
 {

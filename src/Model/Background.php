@@ -1,8 +1,8 @@
 <?php
 
-namespace Void\OgImageBundle\Model;
+namespace Void\OgImage\Model;
 
-use Void\OgImageBundle\Enum\Fit;
+use Void\OgImage\Enum\Fit;
 
 readonly class Background
 {

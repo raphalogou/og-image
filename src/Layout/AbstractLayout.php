@@ -1,11 +1,11 @@
 <?php
 
-namespace Void\OgImageBundle\Layout;
+namespace Void\OgImage\Layout;
 
 use Intervention\Image\Interfaces\ImageManagerInterface;
-use Void\OgImageBundle\Canvas;
-use Void\OgImageBundle\Model\ImageContent;
-use Void\OgImageBundle\Theme;
+use Void\OgImage\Canvas;
+use Void\OgImage\Model\ImageContent;
+use Void\OgImage\Theme;
 
 abstract class AbstractLayout
 {

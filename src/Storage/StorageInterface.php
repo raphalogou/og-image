@@ -1,9 +1,9 @@
 <?php
 
-namespace Void\OgImageBundle\Storage;
+namespace Void\OgImage\Storage;
 
-use Void\OgImageBundle\Exception\ImageStorageException;
-use Void\OgImageBundle\ImageResult;
+use Void\OgImage\Exception\ImageStorageException;
+use Void\OgImage\ImageResult;
 
 interface StorageInterface
 {

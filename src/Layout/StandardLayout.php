@@ -1,18 +1,18 @@
 <?php
 
-namespace Void\OgImageBundle\Layout;
+namespace Void\OgImage\Layout;
 
 use Intervention\Image\Interfaces\ImageManagerInterface;
-use Void\OgImageBundle\Canvas;
-use Void\OgImageBundle\Enum\Placement;
-use Void\OgImageBundle\Model\Background;
-use Void\OgImageBundle\Model\Box\ImageBox;
-use Void\OgImageBundle\Model\Box\RectBox;
-use Void\OgImageBundle\Model\Box\TextBox;
-use Void\OgImageBundle\Model\Font;
-use Void\OgImageBundle\Model\ImageContent;
-use Void\OgImageBundle\Model\Position;
-use Void\OgImageBundle\Theme;
+use Void\OgImage\Canvas;
+use Void\OgImage\Enum\Placement;
+use Void\OgImage\Model\Background;
+use Void\OgImage\Model\Box\ImageBox;
+use Void\OgImage\Model\Box\RectBox;
+use Void\OgImage\Model\Box\TextBox;
+use Void\OgImage\Model\Font;
+use Void\OgImage\Model\ImageContent;
+use Void\OgImage\Model\Position;
+use Void\OgImage\Theme;
 
 class StandardLayout extends AbstractLayout
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Void\OgImageBundle;
+namespace Void\OgImage;
 
 use Intervention\Image\Interfaces\ImageInterface;
 use Intervention\Image\Interfaces\ImageManagerInterface;
-use Void\OgImageBundle\Enum\Fit;
-use Void\OgImageBundle\Model\Background;
-use Void\OgImageBundle\Model\Box\Box;
-use Void\OgImageBundle\Model\Position;
+use Void\OgImage\Enum\Fit;
+use Void\OgImage\Model\Background;
+use Void\OgImage\Model\Box\Box;
+use Void\OgImage\Model\Position;
 
 class Canvas
 {

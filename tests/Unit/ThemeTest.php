@@ -1,11 +1,11 @@
 <?php
 
-namespace Void\OgImageBundle\Tests\Unit;
+namespace Void\OgImage\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Void\OgImageBundle\Model\Background;
-use Void\OgImageBundle\Model\Font;
-use Void\OgImageBundle\Theme;
+use Void\OgImage\Model\Background;
+use Void\OgImage\Model\Font;
+use Void\OgImage\Theme;
 
 class ThemeTest extends TestCase
 {

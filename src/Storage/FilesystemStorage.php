@@ -1,21 +1,22 @@
 <?php
 
-namespace Void\OgImageBundle\Storage;
+namespace Void\OgImage\Storage;
 
-use Symfony\Component\Filesystem\Filesystem;
-use Void\OgImageBundle\Exception\ImageStorageException;
-use Void\OgImageBundle\ImageResult;
+use Void\OgImage\Exception\ImageStorageException;
+use Void\OgImage\ImageResult;
 
 class FilesystemStorage implements StorageInterface
 {
-    private readonly Filesystem $filesystem;
-
     public function __construct(private readonly string $storageDirectory)
     {
-        $this->filesystem = new Filesystem();
+        if (!file_exists($this->storageDirectory)) {
+            if (!mkdir($this->storageDirectory, 0755, true)) {
+                throw new ImageStorageException(sprintf('Failed to create storage directory: %s', $this->storageDirectory));
+            }
+        }
 
-        if (false === $this->filesystem->exists($this->storageDirectory)) {
-            $this->filesystem->mkdir($this->storageDirectory);
+        if (!is_writable($this->storageDirectory)) {
+            throw new ImageStorageException(sprintf('Storage directory is not writable: %s', $this->storageDirectory));
         }
     }
 
@@ -23,12 +24,31 @@ class FilesystemStorage implements StorageInterface
     {
         $fullPath = sprintf('%s/%s', $this->storageDirectory, trim($path, '/'));
 
-        try {
-            $this->filesystem->dumpFile($fullPath, $result->toString());
-
-            return $fullPath;
-        } catch (\Exception $e) {
-            throw new ImageStorageException(sprintf('Failed to save image to %s: %s', $fullPath, $e->getMessage()), 0, $e);
+        // Ensure the directory for the file exists
+        $directory = dirname($fullPath);
+        if (!is_dir($directory)) {
+            if (!mkdir($directory, 0755, true)) {
+                throw new ImageStorageException(sprintf('Failed to create directory: %s', $directory));
+            }
         }
+
+        $resource = fopen($fullPath, 'wb');
+        if (!$resource) {
+            throw new ImageStorageException(sprintf('Failed to open file for writing: %s (check permissions and disk space)', $fullPath));
+        }
+
+        $content = $result->toString();
+        $length = fputs($resource, $content);
+
+        if (false === $length || $length !== strlen($content)) {
+            fclose($resource);
+            throw new ImageStorageException(sprintf('Failed to write image data to file: %s (check disk space and permissions)', $fullPath));
+        }
+
+        if (!fclose($resource)) {
+            throw new ImageStorageException(sprintf('Failed to close file after writing: %s', $fullPath));
+        }
+
+        return $fullPath;
     }
 }

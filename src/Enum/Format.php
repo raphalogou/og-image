@@ -1,6 +1,6 @@
 <?php
 
-namespace Void\OgImageBundle\Enum;
+namespace Void\OgImage\Enum;
 
 enum Format
 {

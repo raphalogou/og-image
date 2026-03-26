@@ -1,11 +1,11 @@
 <?php
 
-namespace Void\OgImageBundle;
+namespace Void\OgImage;
 
 use Intervention\Image\Interfaces\ImageManagerInterface;
-use Void\OgImageBundle\Enum\Format;
-use Void\OgImageBundle\Layout\AbstractLayout;
-use Void\OgImageBundle\Model\ImageContent;
+use Void\OgImage\Enum\Format;
+use Void\OgImage\Layout\AbstractLayout;
+use Void\OgImage\Model\ImageContent;
 
 class Generator
 {
