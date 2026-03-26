@@ -12,7 +12,7 @@ abstract class Box
     abstract public function render(ImageInterface $image, Position $position): void;
 
     /**
-     * @return ?array
+     * @return array<int,int>
      */
     public function getSize(): array
     {

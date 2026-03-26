@@ -2,8 +2,8 @@
 
 namespace Void\OgImageBundle;
 
-use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
+use Intervention\Image\Interfaces\ImageManagerInterface;
 use Void\OgImageBundle\Enum\Fit;
 use Void\OgImageBundle\Model\Background;
 use Void\OgImageBundle\Model\Box\Box;
@@ -13,9 +13,8 @@ class Canvas
 {
     private ImageInterface $image;
 
-    public function __construct(private readonly int $width, private readonly int $height,
-    ) {
-        $imageManager = ImageManager::imagick();
+    public function __construct(private readonly int $width, private readonly int $height, ImageManagerInterface $imageManager)
+    {
         $this->image = $imageManager
             ->create($this->width, $this->height)
             ->fill('#ffffff');

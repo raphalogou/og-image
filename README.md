@@ -17,8 +17,13 @@ The OG Image Bundle provides a flexible, extensible system to programmatically g
 ## Requirements
 
 - PHP 8.2+
-- Symfony 7.4 or 8.0+
+- Symfony 7.4 or 8.0+ (optional - core bundle works standalone)
 - Intervention Image 3.11+
+- **Image Driver**: One of:
+  - **GD** (bundled with PHP, recommended)
+  - **Imagick** (optional, for better performance)
+
+At least one image driver must be available. GD is included with most PHP installations by default.
 
 ## Installation
 
@@ -35,6 +40,19 @@ return [
     Void\OgImageBundle\OgImageBundle::class => ['all' => true],
 ];
 ```
+
+Configure the bundle:
+
+```yaml
+# config/packages/og_image.yaml
+og_image:
+  driver: imagick        # 'imagick' (recommended) or 'gd' (default fallback)
+  storage_dir: '%kernel.project_dir%/public/og-images'
+```
+
+**Driver Configuration:**
+- `imagick` (recommended) - Best performance, requires `php-imagick` extension
+- `gd` - Fallback option, bundled with PHP
 
 ## Quick Start
 
@@ -71,13 +89,18 @@ $theme = new Theme(
 $layout = new StandardLayout();
 
 // Generate image
-$generator = new Generator();
+use Intervention\Image\ImageManager;
+
+$imageManager = ImageManager::gd();  // or ImageManager::imagick()
+$generator = new Generator($imageManager);
 $result = $generator->generate(
     data: $content,
     layout: new StandardLayout(),
     theme: $theme,      // optional - uses layout defaults if null
     format: Format::Webp
 );
+
+If used in a Symfony application, the `Generator` can be autowired.
 
 // Convert to various formats
 $binary = $result->toString();        // Binary image data
@@ -115,7 +138,8 @@ $height = $result->getHeight();     // 640
 Extend the `Layout` abstract class to create custom layouts:
 
 ```php
-use Void\OgImageBundle\Layout\Layout;
+use Intervention\Image\ImageManager;
+use Void\OgImageBundle\Layout\AbstractLayout;
 use Void\OgImageBundle\Model\ImageContent;
 use Void\OgImageBundle\Theme;
 use Void\OgImageBundle\Canvas;
@@ -123,11 +147,11 @@ use Void\OgImageBundle\Model\Background;
 use Void\OgImageBundle\Model\Box\TextBox;
 use Void\OgImageBundle\Model\Position;
 
-class MyCustomLayout extends Layout
+class MyCustomLayout extends AbstractLayout
 {
-    public function build(ImageContent $content, Theme $theme): Canvas
+    public function build(\Intervention\Image\Interfaces\ImageManagerInterface $imageManager, ImageContent $content, ?Theme $theme = null): Canvas
     {
-        $canvas = new Canvas(1200, 630);
+        $canvas = new Canvas(1200, 630, $imageManager);
         
         // Set background
         $canvas->setBackground($theme->background ?? new Background(color: '#ffffff'));

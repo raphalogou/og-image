@@ -2,28 +2,31 @@
 
 namespace Void\OgImageBundle;
 
+use Intervention\Image\Interfaces\ImageManagerInterface;
 use Void\OgImageBundle\Enum\Format;
 use Void\OgImageBundle\Layout\AbstractLayout;
 use Void\OgImageBundle\Model\ImageContent;
 
 class Generator
 {
+    public function __construct(private readonly ImageManagerInterface $imageManager)
+    {
+    }
+
     public function generate(ImageContent $data, AbstractLayout $layout, ?Theme $theme = null, Format $format = Format::Webp): ImageResult
     {
         $resolvedTheme = $layout
             ->defaultTheme()
             ->mergeWith($theme);
 
-        $canvas = $layout->build($data, $resolvedTheme);
+        $canvas = $layout->build($this->imageManager, $data, $resolvedTheme);
 
-        // 3. Encode based on format
         $image = $canvas->getImage();
         $encoded = match ($format) {
             Format::Png => $image->toPng(),
             Format::Webp => $image->toWebp(),
         };
 
-        // 4. Return ImageResult
         return new ImageResult(
             $encoded,
             $canvas->getWidth(),

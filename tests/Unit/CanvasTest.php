@@ -5,12 +5,18 @@ namespace Void\OgImageBundle\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Void\OgImageBundle\Canvas;
 use Void\OgImageBundle\Model\Background;
+use Void\OgImageBundle\Tests\ImageManagerFactory;
 
 class CanvasTest extends TestCase
 {
+    private function createCanvas(int $width = 1280, int $height = 640): Canvas
+    {
+        return new Canvas($width, $height, ImageManagerFactory::create());
+    }
+
     public function testGetImageReturnsInterventionImage(): void
     {
-        $canvas = new Canvas(1280, 640);
+        $canvas = $this->createCanvas(1280, 640);
 
         $image = $canvas->getImage();
 
@@ -21,7 +27,7 @@ class CanvasTest extends TestCase
 
     public function testSetBackgroundAppliesColor(): void
     {
-        $canvas = new Canvas(800, 600);
+        $canvas = $this->createCanvas(800, 600);
         $background = new Background(color: '#ff0000');
 
         $canvas->setBackground($background);

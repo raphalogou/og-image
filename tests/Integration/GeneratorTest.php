@@ -10,6 +10,7 @@ use Void\OgImageBundle\Model\Background;
 use Void\OgImageBundle\Model\Badge;
 use Void\OgImageBundle\Model\Font;
 use Void\OgImageBundle\Model\ImageContent;
+use Void\OgImageBundle\Tests\ImageManagerFactory;
 use Void\OgImageBundle\Theme;
 
 class GeneratorTest extends TestCase
@@ -19,7 +20,7 @@ class GeneratorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->generator = new Generator();
+        $this->generator = new Generator(ImageManagerFactory::create());
         $this->fontPath = __DIR__.'/../../assets/fonts/inter-regular.ttf';
 
         // Verify font file exists

@@ -2,6 +2,7 @@
 
 namespace Void\OgImageBundle\Layout;
 
+use Intervention\Image\Interfaces\ImageManagerInterface;
 use Void\OgImageBundle\Canvas;
 use Void\OgImageBundle\Enum\Placement;
 use Void\OgImageBundle\Model\Background;
@@ -49,10 +50,12 @@ class StandardLayout extends AbstractLayout
         );
     }
 
-    public function build(ImageContent $data, Theme $theme): Canvas
+    public function build(ImageManagerInterface $imageManager, ImageContent $data, ?Theme $theme = null): Canvas
     {
-        $canvas = new Canvas(self::IMAGE_WIDTH, self::IMAGE_HEIGHT);
+        $canvas = new Canvas(self::IMAGE_WIDTH, self::IMAGE_HEIGHT, $imageManager);
         $canvas->setBackground($theme->background);
+
+        $theme = $this->defaultTheme()->mergeWith($theme);
 
         // Position tracking
         $currentY = self::MARGIN;
